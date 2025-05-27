@@ -32,7 +32,8 @@ Somente depois disso é que você deve passar para o próximo passo.
 ## Passo 1 - Nova forma de visualização
 
 Revise o código da classe `Simulador`. 
-Encontre todas as ocorrências das classes e interfaces de visualização e rastreie todas as variáveis ​​declaradas usando qualquer um desses tipos.
+Encontre todas as ocorrências das classes e interfaces de visualização (aquelas cujos nomes começam com `Visao`) 
+e rastreie todas as variáveis ​​declaradas usando qualquer um desses tipos.
 A ideia é que você tente entender exatamente como as visualizações são usadas na
 classe `Simulador`.
 
@@ -41,7 +42,9 @@ Em seguida, implemente uma nova classe `VisaoDeTexto` que implemente a interface
 - A classe criada deve fornecer uma visualização textual da simulação.
 - A cada passo da simulação ela deve imprimir uma linha no terminal como o exemplo abaixo:
    
-   ```Raposas: 121 Coelhos: 266 ```
+   ```Passo N - Raposas: 121 Coelhos: 266 ```
+
+Dica: você precisar usar um objeto da classe `EstatisticasCampo`.
 
 Em seguida, altere a classe `Simulador` para que ela inclua a nova visualização.
 
@@ -53,7 +56,8 @@ que não são animais, como plantas, caçadores ou informações sobre clima, po
 Para tratar isso, seria bom aumentar o nível de abstração do nosso modelo, criando uma classe
 `Ator` que pudesse representar uma gama maior de entidades que podem interagir com a simulação.
 
-Neste passo você deve criar uma interface `Ator` que tenha os métodos `agir` e `estaAtivo` e fazer as alterações necessárias na classe Animal para implementar essa interface.
+Neste passo você deve criar uma interface `Ator` que tenha os métodos `agir` e `estaAtivo` e 
+fazer as alterações necessárias na classe `Animal` para implementar essa interface.
 
 - O método `agir` deve receber uma lista de atores por parâmetro e não deve retornar nada.
 - Já o método `estaAtivo` deve retornar um booleano indicando se o ator está ativo ou não.
@@ -87,10 +91,11 @@ Antes de implementar, pense na modelagem da classe `Cacador`.
 - Como deve ser a implementação do método `estaAtivo`?
 - É necessária a implementação de algum outro método?
 
-Em seguida, altere a classe `Simulador` e a classe `GeradorDePopulacoes` para que os caçadores sejam incluídos na simulação.
+Em seguida, altere a classe `GeradorDePopulacoes` para que os caçadores sejam incluídos na simulação.
 
 - Você deve colocar apenas um pequeno número de caçadores no campo no início da simulação.
 - Lembre-se de definir uma cor para os caçadores no objeto que trata a visão de grade.
+- Trate também a visão de texto.
 - Obs.: não é necessário tratar a visão de gráfico.
 
 ## Passo 5 - Melhorando a implementação dos caçadores
@@ -103,7 +108,7 @@ As perguntas abaixo não precisam ser respondidas aqui, mas te ajudam a verifica
 - Os caçadores permanecem na simulação durante todo o tempo ou desaparecem em algum momento?
 - Se desaparecerem, por que isso ocorre e isso representa um
 comportamento realista?
-- Quais outras classes precisaram ser alteradas como resultado da introdução dos caçadores?
+- Alguma outra classe precisara ser alterada como resultado da introdução dos caçadores?
 
 ## Passo 6 - Incrementando o uso do polimorfismo
 
@@ -127,6 +132,8 @@ Pensando que a simulação possa ter realmente apenas raposas e coelhos,
 como esse acoplamento poderia ser removido?
 
 - Dica: pense em como o polimorfismo e a inclusão de algum método na interface `Ator` poderia ajudar a resolver essa questão.
+
+Faça as alterações necessárias e teste sua implementação.
 
 ## (Opcional) Passo 8 - Flexibilizando a simulação
 
@@ -156,6 +163,8 @@ public class RelacoesPredadorPresa {
     // Registra relacoes predador-presa
     private static void registrarRelacoes() {
         predadorEPresa.put(Raposa.class, Coelho.class);
+        // caso sejam criados outros predadores e presas, eles seriam criados aqui:
+        // Exemplo: predadorEPresa.put(Leao.class, Zebra.class);
     }
 
     // Verifica se o predador pode comer a presa

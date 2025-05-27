@@ -36,7 +36,7 @@ public interface VisaoSimulador
     void reiniciar();
 
     /**
-     * Reabilita as opçẽos da visão
+     * Reabilita as opções da visão
      */
     void reabilitarOpcoes();
 }

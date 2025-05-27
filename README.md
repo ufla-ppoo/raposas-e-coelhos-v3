@@ -44,9 +44,12 @@ Em seguida, implemente uma nova classe `VisaoDeTexto` que implemente a interface
    
    ```Passo N - Raposas: 121 Coelhos: 266 ```
 
-Dica: você precisar usar um objeto da classe `EstatisticasCampo`.
+- Dica: você precisará usar um objeto da classe `EstatisticasCampo`.
+  - Avalie quais métodos da classe são mais úteis para obter as informações necessárias.
 
 Em seguida, altere a classe `Simulador` para que ela inclua a nova visualização.
+
+Teste a sua implementação para garantir que a nova visualização está funcionando corretamente.
 
 ## Passo 2 - Aumentando o nível de abstração
 
@@ -63,24 +66,27 @@ fazer as alterações necessárias na classe `Animal` para implementar essa inte
 - Já o método `estaAtivo` deve retornar um booleano indicando se o ator está ativo ou não.
   - Obs.: estamos usando _ativo_ em vez de vivo porque poderia existir uma subclasse que não seja um ser vivo.
 
-Neste passo, ainda não vamos usar a interface `Ator` na classe `Simulador`.
-Basta que a classe `Animal` esteja implementando a interface e o sistema esteja compilando e funcionando corretamente.
+Neste passo, ainda não vamos usar a interface `Ator` na classe `Simulador` (e, portanto, ela ainda não vai compilar).
+- Basta que a classe `Animal` esteja implementando a interface e ela e suas subclasses estejam compilando corretamente.
 
 ## Passo 3 - Usando atores na simulação
 
 Neste passo você deve alterar a classe `Simulador` para que ela use a interface `Ator` em vez de usar diretamente a classe `Animal`.
+- Lembre-se de adequar os nomes para que eles façam sentido com a nova interface.
 
-Após a alteração a simulação deve continuar funcionando normalmente.
+Você deverá alterar também a classe `GeradorDePopulacoes`.
+
+Após as alterações a simulação deve voltar funcionando normalmente.
 
 ## Passo 4 - Expandindo a simulação: caçadores
 
 Aproveitando que a interface `Ator` permite expandir a forma de uso do simulador, vamos criar uma
-nova classe `Cacador`, que implementa a interface `Ator`, para representar caçadores na simulação.
+nova classe `Cacador` para representar caçadores na simulação.
 
-Essa nova classe não vai herdar de `Animal`, porque ela tem características bem distintas dos animais.
+Essa nova classe não vai herdar de `Animal` porque ela tem características bem distintas dos animais.
 
 - Os caçadores não têm idade máxima e não se alimentam nem se reproduzem. 
-- A cada passo da simulação, um caçador se move para um local aleatório em qualquer lugar do campo 
+- A cada passo da simulação, um caçador se move para um local aleatório livre em qualquer lugar do campo 
   - e dispara um número fixo de tiros em alvos aleatórios ao redor do campo. 
   - Qualquer animal em um dos alvos é morto.
 
@@ -90,12 +96,13 @@ Antes de implementar, pense na modelagem da classe `Cacador`.
 - Como deve ser a implementação do método `agir`?
 - Como deve ser a implementação do método `estaAtivo`?
 - É necessária a implementação de algum outro método?
+- A nova classe geraria replicação de código com alguma outra classe já existente? 
+  Em caso afirmativo, faça a refatoração necessária para evitar essa replicação.
 
-Em seguida, altere a classe `GeradorDePopulacoes` para que os caçadores sejam incluídos na simulação.
+Por fim, altere a classe `GeradorDePopulacoes` para que os caçadores sejam incluídos na simulação.
 
 - Você deve colocar apenas um pequeno número de caçadores no campo no início da simulação.
 - Lembre-se de definir uma cor para os caçadores no objeto que trata a visão de grade.
-- Trate também a visão de texto.
 - Obs.: não é necessário tratar a visão de gráfico.
 
 ## Passo 5 - Melhorando a implementação dos caçadores
@@ -107,10 +114,10 @@ As perguntas abaixo não precisam ser respondidas aqui, mas te ajudam a verifica
 
 - Os caçadores permanecem na simulação durante todo o tempo ou desaparecem em algum momento?
 - Se desaparecerem, por que isso ocorre e isso representa um
-comportamento realista?
-- Alguma outra classe precisara ser alterada como resultado da introdução dos caçadores?
+comportamento realista? Se não for, altere a simulação.
+- Alguma outra classe precisará ser alterada como resultado da introdução dos caçadores?
 
-## Passo 6 - Incrementando o uso do polimorfismo
+## (Opcional) Passo 6 - Incrementando o uso do polimorfismo
 
 Repare que a classe `Campo` utiliza a classe `Object` para guardar o que 
 existe em cada localização do campo.
@@ -123,7 +130,7 @@ Altere então a classe `Campo` para que ela utilize a interface `Ator` em vez de
 
 Teste a sua simulação antes de enviar suas alterações.
 
-## Passo 7 - Diminuindo o acoplamento entre as classes
+## (Opcional) Passo 7 - Diminuindo o acoplamento entre as classes
 
 A classe `Raposa` possui acoplamento com a classe `Coelho` porque
 ela precisa saber se um ator obtido do campo é um coelho para poder comê-lo.
@@ -131,7 +138,7 @@ ela precisa saber se um ator obtido do campo é um coelho para poder comê-lo.
 Pensando que a simulação possa ter realmente apenas raposas e coelhos,
 como esse acoplamento poderia ser removido?
 
-- Dica: pense em como o polimorfismo e a inclusão de algum método na interface `Ator` poderia ajudar a resolver essa questão.
+- Dica: pense em como o polimorfismo e a inclusão de algum(ns) método(s) na interface `Ator` poderia ajudar a resolver essa questão.
 
 Faça as alterações necessárias e teste sua implementação.
 
@@ -140,15 +147,15 @@ Faça as alterações necessárias e teste sua implementação.
 No passo anterior, provavelmente, você conseguiu uma solução que removeu
 o acoplamento entre as classes `Raposa` e `Coelho`, mas que ainda não é flexível o suficiente.
 
-- Imagine, por exemplo, se a simulação tivesse outros predadores e presas, como
+- Imagine, por exemplo, se a simulação tivesse outros pares de predadores e presas, como
   leões e zebras, ou tubarões e peixes.
 
 Uma maneira de tratar essa flexibilidade seria delegar a responsabilidade de
-decidir se um ator é uma presa ou não para uma outra classe.
+decidir se um ator é uma presa de um determinado predador (ou não) para uma outra classe.
 
 Essa classe poderia ser responsável por registrar as relações entre predadores e presas.
 - Isso deixaria o restante do sistema desacoplado dessas relações, permitindo que
-  novos predadores e presas fossem adicionados sem a necessidade de alterar o código existente.
+  novos predadores e presas fossem adicionados sem a necessidade de alterar o código existente (exceto a própria classe que trata isso).
 
 Altere então o seu projeto para usar a classe `RelacoesPredadorPresa` abaixo. 
 
@@ -157,23 +164,28 @@ import java.util.HashMap;
 import java.util.Map;
 
 public class RelacoesPredadorPresa {
-    // Guarda pares de classes no qual a chave é o produtor e o valor é a presa
+    // Guarda pares de classes no qual a chave é o predador e o valor é a presa
     private static final Map<Class<?>, Class<?>> predadorEPresa = new HashMap<>();
 
     // Registra relacoes predador-presa
     private static void registrarRelacoes() {
         predadorEPresa.put(Raposa.class, Coelho.class);
+        predadorEPresa.put(Cacador.class, Coelho.class);
+        predadorEPresa.put(Cacador.class, Raposa.class);
         // caso sejam criados outros predadores e presas, eles seriam criados aqui:
         // Exemplo: predadorEPresa.put(Leao.class, Zebra.class);
     }
 
-    // Verifica se o predador pode comer a presa
-    public static boolean podeComer(Object predador, Object possivelPresa) {
+    // Verifica se o predador consegue matar a presa
+    public static boolean consegueMatar(Object predador, Object possivelPresa) {
+        if (predador == null || possivelPresa == null) {
+            return false; // Se algum dos objetos for nulo, não há relação
+        }
         if (predadorEPresa.isEmpty()) {
             registrarRelacoes();
         }
         Class<?> presaEsperada = predadorEPresa.get(predador.getClass());
-        return presaEsperada != null && presaEsperada.isInstance(possivelPresa);
+        return presaEsperada.isInstance(possivelPresa);
     }
 }
 ```
